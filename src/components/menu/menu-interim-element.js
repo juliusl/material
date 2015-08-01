@@ -29,7 +29,7 @@ function MenuProvider($$interimElementProvider) {
       onShow: onShow,
       onRemove: onRemove,
       hasBackdrop: true,
-      disableParentScroll: true,
+      disableParentScroll: false,
       skipCompile: true,
       preserveScope: true,
       themable: true
@@ -147,6 +147,18 @@ function MenuProvider($$interimElementProvider) {
             }
           });
         });
+        
+        if (!opts.disableParentScroll) {
+            $(window).on('scroll', function (e) {
+                close();
+
+                function close() {
+                    scope.$apply(function () {
+                        opts.mdMenuCtrl.close();
+                    });
+                }
+            });
+        }
 
         // Close menu on menu item click, if said menu-item is not disabled
         var captureClickListener = function(e) {
